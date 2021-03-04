@@ -4,6 +4,7 @@
   "description": "Sql backend employee tracker",
   "main": "server.js",
   "dependencies": {
+    "@mysql/xdevapi": "8.0.23",
     "ansi-escapes": "^4.3.1",
     "ansi-regex": "^5.0.0",
     "ansi-styles": "^4.3.0",
@@ -23,6 +24,7 @@
     "chardet": "^0.7.0",
     "class-utils": "^0.3.6",
     "cli-cursor": "^3.1.0",
+    "cli-table": "^0.3.5",
     "cli-width": "^3.0.0",
     "clone": "^1.0.4",
     "collection-visit": "^1.0.0",
