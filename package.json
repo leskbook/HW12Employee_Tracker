@@ -169,6 +169,7 @@
     "unset-value": "^1.0.0",
     "urix": "^0.1.0",
     "use": "^3.1.1",
+    "util": "^0.12.3",
     "util-deprecate": "^1.0.2",
     "v8flags": "^3.2.0",
     "wcwidth": "^1.0.1",

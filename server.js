@@ -5,6 +5,7 @@ require('console.table');
 const figlet = require('figlet');
 
 
+//mysql connection
 
 const connection = mysql.createConnection({
   multipleStatements: true,
@@ -15,6 +16,7 @@ const connection = mysql.createConnection({
   database: "employee_db"
 });
 
+//figlet menu
 
 connection.connect(function (err) {
   if (err) throw err;
@@ -40,7 +42,7 @@ function start() {
         "View all employees",
         "View employee by department",
         "View all roles",
-        "View by manager",
+        "View by manager",        
         "Add an employee",
         "Add a department",
         "Add a role",
@@ -61,7 +63,7 @@ function start() {
       } else if (answer.action === 'View all roles') {
         viewRole();
       } else if (answer.action === 'View by manager') {
-        viewByManager();
+        viewByManager();      
       } else if (answer.action === 'Add an employee') {
         addEmployee();
       } else if (answer.action === 'Add a department') {
@@ -85,6 +87,9 @@ function start() {
       }
     })
 }
+
+//View by Department ----------------------------------------------------------------------------------------------------------------------
+
 function viewDepartments() {
   const query = `SELECT department.name AS department, role.title, employee.id, employee.first_name, employee.last_name
   FROM employee
@@ -100,6 +105,8 @@ function viewDepartments() {
     start();
   });
 };
+  
+//View by Role -----------------------------------------------------------------------------------------------------------
 
 function viewRole() {
   const query = `SELECT role.title, employee.id, employee.first_name, employee.last_name, department.name AS department
@@ -117,6 +124,8 @@ function viewRole() {
   });
 };
 
+//View all Employees ------------------------------------------------------------------------------------------------------------
+
 function viewEmployees() {
   const query = `SELECT employee.id, employee.first_name, employee.last_name, role.title, department.name AS department, role.salary, CONCAT(manager.first_name, ' ', manager.last_name) AS manager
   FROM employee
@@ -133,6 +142,9 @@ function viewEmployees() {
     start();
   });
 };
+
+//View by Manager ---------------------------------------------------------------------------------------------------------------------------
+
 function viewByManager() {
   const query = `SELECT CONCAT(manager.first_name, ' ', manager.last_name) AS manager, department.name AS department, employee.id, employee.first_name, employee.last_name, role.title
   FROM employee
@@ -149,6 +161,9 @@ function viewByManager() {
     start();
   });
 };
+
+//Add Department ----------------------------------------------------------------------------------------------------------------------------------------------
+
 function addDepartment() {
   inquirer
     .prompt({
@@ -163,7 +178,10 @@ function addDepartment() {
       })
       viewDepartments();
     })
-}
+};
+
+//Add new Role -----------------------------------------------------------------------------------------------------------------
+
 function addRole() {
   inquirer
     .prompt({
@@ -178,7 +196,9 @@ function addRole() {
       })
       viewRole();
     })
-}
+};
+
+//Add new Employee --------------------------------------------------------------------------------------------------------------
 
 async function addEmployee() {
   const addname = await inquirer.prompt(askName());
@@ -227,7 +247,7 @@ async function addEmployee() {
           }
         }
       }
-      console.log(chalk.bgGreenBright.black('Employee has been added. Please view all employee to verify...'));
+      console.log(chalk.bgGreenBright.black('Employee added. Please view all employee to verify...'));
       connection.query(
         'INSERT INTO employee SET ?',
         {
@@ -243,7 +263,9 @@ async function addEmployee() {
     })
   })
 
-}
+};
+
+//Update Role ---------------------------------------------------------------------------------------------------------------------------------
 
 function updateRole() {
   connection.query('SELECT * FROM employee', function (err, result) {
@@ -309,7 +331,10 @@ function updateRole() {
       })
   })
 
-}
+};
+
+//Remove function to remove data ----------------------------------------------------------------------------------------------------------------------
+
 function remove(input) {
   const promptQ = {
     yes: "yes",
@@ -332,8 +357,10 @@ function remove(input) {
 
   });
 };
-async function removeEmployee() {
 
+//Remove employee -------------------------------------------------------------------------------------------------------------
+
+async function removeEmployee() {
   const answer = await inquirer.prompt([
     {
       name: "first",
@@ -354,6 +381,9 @@ async function removeEmployee() {
   prompt();
 
 };
+
+//Ask ID function -----------------------------------------------------------------------------------------------------------------
+
 function askId() {
   return ([
     {
@@ -362,7 +392,10 @@ function askId() {
       message: "What is the employe ID?:  "
     }
   ]);
-}
+};
+
+//Delete Role ---------------------------------------------------------------------------------------------------------------------
+
 async function deleteRole() {
   const employeeId = await inquirer.prompt(askId());
 
@@ -397,7 +430,9 @@ async function deleteRole() {
         prompt();
       });
     
-}
+};
+
+//Ask name function called in addEmployee ---------------------------------------------------------------------------------------------------------------------------------
 
 function askName() {
   return ([
@@ -412,4 +447,4 @@ function askName() {
       message: "last name: "
     }
   ])
-}
+};
